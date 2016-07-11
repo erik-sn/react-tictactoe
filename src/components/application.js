@@ -47,22 +47,20 @@ export default class Application extends Component {
       <div>
         {!user ? modal : ''}
         <div id="app-container" style={!user ? { opacity: '0.3' } : {}} >
-          <div id="box-container">
-            <div className="box-row">
-              <Box id="topLeft" labels={labels} select={this.onSelect} />
-              <Box id="topMiddle" labels={labels} select={this.onSelect} />
-              <Box id="topRight" labels={labels} select={this.onSelect} />
-            </div>
-            <div className="box-row">
-              <Box id="middleLeft" labels={labels} select={this.onSelect} />
-              <Box id="topmiddleMiddleMiddle" labels={labels} select={this.onSelect} />
-              <Box id="topmiddleRightRight" labels={labels} select={this.onSelect} />
-            </div>
-            <div className="box-row">
-              <Box id="bottomLeft" labels={labels} select={this.onSelect} />
-              <Box id="bottomMiddle" labels={labels} select={this.onSelect} />
-              <Box id="bottomRight" labels={labels} select={this.onSelect} />
-            </div>
+          <div className="box-row">
+            <Box id="topLeft" labels={labels} select={this.onSelect} />
+            <Box id="topMiddle" labels={labels} select={this.onSelect} />
+            <Box id="topRight" labels={labels} select={this.onSelect} />
+          </div>
+          <div className="box-row">
+            <Box id="middleLeft" labels={labels} select={this.onSelect} />
+            <Box id="topmiddleMiddleMiddle" labels={labels} select={this.onSelect} />
+            <Box id="topmiddleRightRight" labels={labels} select={this.onSelect} />
+          </div>
+          <div className="box-row">
+            <Box id="bottomLeft" labels={labels} select={this.onSelect} />
+            <Box id="bottomMiddle" labels={labels} select={this.onSelect} />
+            <Box id="bottomRight" labels={labels} select={this.onSelect} />
           </div>
         </div>
         <Footer />
