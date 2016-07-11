@@ -5,7 +5,7 @@ if (process.env.BROWSER) {
 import React, { Component } from 'react';
 import Modal from './modal';
 import Footer from './footer';
-
+import Box from './box';
 
 export default class Application extends Component {
 
@@ -13,11 +13,29 @@ export default class Application extends Component {
     super(props);
     this.state = {
       user: undefined,
+      labels: {
+        topLeft: '',
+        topMiddle: '',
+        topRight: '',
+        middleLeft: '',
+        middleMiddle: '',
+        middleRight: '',
+        bottomLeft: '',
+        bottomMiddle: '',
+        bottomRight: '',
+      },
     };
+    this.onSelect = this.onSelect.bind(this);
+  }
+
+  onSelect(id) {
+    const labels = this.state.labels;
+    labels[id] = this.state.user;
+    this.setState({ labels });
   }
 
   render() {
-    const { showModal, user } = this.state;
+    const { user, labels } = this.state;
     const modal = (
       <Modal
         choice={(choice) => this.setState({ user: choice })}
@@ -29,7 +47,23 @@ export default class Application extends Component {
       <div>
         {!user ? modal : ''}
         <div id="app-container" style={!user ? { opacity: '0.3' } : {}} >
-
+          <div id="box-container">
+            <div className="box-row">
+              <Box id="topLeft" labels={labels} select={this.onSelect} />
+              <Box id="topMiddle" labels={labels} select={this.onSelect} />
+              <Box id="topRight" labels={labels} select={this.onSelect} />
+            </div>
+            <div className="box-row">
+              <Box id="middleLeft" labels={labels} select={this.onSelect} />
+              <Box id="topmiddleMiddleMiddle" labels={labels} select={this.onSelect} />
+              <Box id="topmiddleRightRight" labels={labels} select={this.onSelect} />
+            </div>
+            <div className="box-row">
+              <Box id="bottomLeft" labels={labels} select={this.onSelect} />
+              <Box id="bottomMiddle" labels={labels} select={this.onSelect} />
+              <Box id="bottomRight" labels={labels} select={this.onSelect} />
+            </div>
+          </div>
         </div>
         <Footer />
       </div>

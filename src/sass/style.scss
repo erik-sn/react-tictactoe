@@ -41,9 +41,28 @@ body {
   background-color: $primary;
 }
 
+#app-container {
+  @include center();
+  width: 60%;
+  max-width: 600px;
+}
 
+#box-container {
+  @include center();
+}
+.box {
+  border: 2px solid $tertiary;
+  display: inline-block;
+  width: 33%;
+  line-height: 100%;
+  text-align: center;
+}
 
-
+.box:before {
+    content: "";
+    display: block;
+    padding-top: 100%;  /* ratio of 1:1*/
+}
 
 .footer {
   @include blur(5px);
