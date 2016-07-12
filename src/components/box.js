@@ -9,7 +9,7 @@ const Box = (props) => {
   return (
     <div
       id={id}
-      style={{ height: size, width: size }}
+      style={{ height: size, width: size, fontSize: size * 0.5 }}
       className="box"
       onClick={() => select(id)}
     >

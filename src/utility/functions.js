@@ -18,6 +18,16 @@ export function isWinner(game) {
 
   // input validation
   const n = game.length;
+  const test = 1;
+  if (!Array.isArray(game)) {
+    throw new Exception('The input game must be a square array of arrays');
+  } else {
+    game.forEach(row => {
+      if (!Array.isArray(row)) {
+        throw new Exception('The input game must be a square array of arrays');
+      }
+    })
+  }
   if (game.some(row => row.length !== n)) {
     throw new Exception('The input game was not a square board');
   }
@@ -33,5 +43,42 @@ export function isWinner(game) {
     }
   }
   return false;
+}
+
+
+/**
+    If the game is over, return the score from X's perspective.
+    Otherwise get a list of new game states for every possible move
+    Create a scores list
+    For each of these states add the minimax result of that state to the scores list
+    If it's X's turn, return the maximum score from the scores list
+    If it's O's turn, return the minimum score from the scores list
+ */
+export function minimax(game, player) {
+  // check to see if there is a winner, return from player's perspective
+  const result = isWinner(game);
+  if (result === player) {
+    return 10;
+  } else if (result) {
+    return -10;
+  }
+
+  const scores = [];
+  const moves = [];
+
+  // find open spaces
+  for (let x = 0; x < game.length; x++) {
+    for (let y = 0; y < game.length; y++) {
+      if (game[x][y] === '') {
+        moves.push([x, y]);
+      }
+    }
+  }
+
+  moves.forEach(move => {
+    const possibleGame = game[move[0]][move[1]];
+    scores.push(minimax(possibleGame));
+  });
+  console.log(scores);
 }
 

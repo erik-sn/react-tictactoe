@@ -1,7 +1,20 @@
-import { Exception, isWinner } from '../../src/utility/functions';
+import { Exception, isWinner, minimax } from '../../src/utility/functions';
 import { expect } from 'chai';
 
 describe('isWinner', () => {
+
+  it('throws an error if the input is not an array of arrays', () => {
+    const game1 = [
+      ['', '', ''],
+      ['', '', ''],
+      ['', '', ''],
+      ['', '', ''],
+    ];
+    expect(() => isWinner(game1)).to.throw(new Exception('The input game was not a square board'));
+
+    const game2 = ['', '', ''];
+    expect(() => isWinner(game2)).to.throw(new Exception('The input game was not a square board'));
+  });
 
   it('throws an error if the input is not square', () => {
     const game1 = [
@@ -18,6 +31,8 @@ describe('isWinner', () => {
     ];
     expect(() => isWinner(game2)).to.throw(new Exception('The input game was not a square board'));
   });
+
+  
 
   it('Returns false if there is no winner', () => {
     const game1 = [
@@ -97,5 +112,18 @@ describe('isWinner', () => {
       expect(isWinner(game)).to.equal('X');
     }
 
+  });
+});
+
+
+describe('minimax', () => {
+
+  it('test!', () => {
+    const game1 = [
+      ['', 'X', 'O'],
+      ['X', 'O', ''],
+      ['', 'X', 'O'],
+    ];
+    minimax(game1, 'X');
   });
 });

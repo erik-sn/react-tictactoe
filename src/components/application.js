@@ -73,28 +73,7 @@ export default class Application extends Component {
     this.setState({ size: (smallest * 0.6) / 3 });
   }
 
-  makeMove(userX, userY) {
-
-    
-    
-    function minimax(test, player, computer) {
-      const playerWin = score(test, )
-      const scores = [];
-      const moves = [];
-      
-      // find open spaces
-      for (let x = 0; x < test.length; x++) {
-        for (let y = 0; y < test.length; y++) {
-          if (test[x][y] === '') {
-            moves.push([x, y]);
-          }
-        }
-      }
-      
-      moves.forEach((move) => {
-        const possibleGame = test[moves[0]][moves[1]]
-      });     
-    }
+  makeMove(userX, userY) {   
     console.log(isWinner)
     const { game, user, computer } = this.state;
     console.log(isWinner(game));
