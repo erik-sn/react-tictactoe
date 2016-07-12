@@ -26,7 +26,7 @@ export function isWinner(game) {
       if (!Array.isArray(row)) {
         throw new Exception('The input game must be a square array of arrays');
       }
-    })
+    });
   }
   if (game.some(row => row.length !== n)) {
     throw new Exception('The input game was not a square board');

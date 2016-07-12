@@ -4,20 +4,16 @@ import { expect } from 'chai';
 describe('isWinner', () => {
 
   it('throws an error if the input is not an array of arrays', () => {
-    const game1 = [
-      ['', '', ''],
-      ['', '', ''],
-      ['', '', ''],
-      ['', '', ''],
-    ];
-    expect(() => isWinner(game1)).to.throw(new Exception('The input game was not a square board'));
+    const game1 = 1;
+    expect(() => isWinner(game1)).to.throw(new Exception('The input game must be a square array of arrays'));
 
     const game2 = ['', '', ''];
-    expect(() => isWinner(game2)).to.throw(new Exception('The input game was not a square board'));
+    expect(() => isWinner(game2)).to.throw(new Exception('The input game must be a square array of arrays'));
   });
 
   it('throws an error if the input is not square', () => {
     const game1 = [
+      ['', '', ''],
       ['', '', ''],
       ['', '', ''],
       ['', '', ''],
@@ -116,14 +112,14 @@ describe('isWinner', () => {
 });
 
 
-describe('minimax', () => {
+// describe('minimax', () => {
 
-  it('test!', () => {
-    const game1 = [
-      ['', 'X', 'O'],
-      ['X', 'O', ''],
-      ['', 'X', 'O'],
-    ];
-    minimax(game1, 'X');
-  });
-});
+//   it('test!', () => {
+//     const game1 = [
+//       ['', 'X', 'O'],
+//       ['X', 'O', ''],
+//       ['', 'X', 'O'],
+//     ];
+//     minimax(game1, 'X');
+//   });
+// });
