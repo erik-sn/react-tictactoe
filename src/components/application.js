@@ -7,6 +7,8 @@ import Modal from './modal';
 import Footer from './footer';
 import Box from './box';
 
+import { isWinner } from '../utility/functions';
+
 export default class Application extends Component {
 
   constructor(props) {
@@ -65,31 +67,37 @@ export default class Application extends Component {
   }
 
   adjustSize() {
-    const height = window.innerHeight; // -60 to account for footer
+    const height = window.innerHeight;
     const width = window.innerWidth;
     const smallest = height < width ? height : width;
     this.setState({ size: (smallest * 0.6) / 3 });
   }
 
   makeMove(userX, userY) {
-    function score(test, x, y, n, player) {
-      const counts = [0, 0, 0, 0];
-      for (let i = 0; i < n; i++) {
-        counts[0] = test[x][i] === player ? counts[0] += 1 : counts[0];
-        counts[1] = test[i][y] === player ? counts[1] + 1 : counts[1];
-        counts[2] = test[i][i] === player ? counts[2] + 1 : counts[2];
-        counts[3] = test[i][n - i - 1] === player ? counts[3] + 1 : counts[3];
-      }
-      return counts.some(count => count === 3);
-    }
 
-    const { game, user, computer } = this.state;
-    if (userX >= 0 && userY >= 0) {
-      const playerWin = score(game, userX, userY, 3, user);
-      if (playerWin) {
-        this.setState({ winner: true });
+    
+    
+    function minimax(test, player, computer) {
+      const playerWin = score(test, )
+      const scores = [];
+      const moves = [];
+      
+      // find open spaces
+      for (let x = 0; x < test.length; x++) {
+        for (let y = 0; y < test.length; y++) {
+          if (test[x][y] === '') {
+            moves.push([x, y]);
+          }
+        }
       }
+      
+      moves.forEach((move) => {
+        const possibleGame = test[moves[0]][moves[1]]
+      });     
     }
+    console.log(isWinner)
+    const { game, user, computer } = this.state;
+    console.log(isWinner(game));
   }
 
   render() {
