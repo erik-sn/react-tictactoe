@@ -7,7 +7,7 @@ import Modal from './modal';
 import Footer from './footer';
 import Box from './box';
 
-import { findMoves, minimax, isWinner } from '../utility/functions';
+import { findMoves, minimax } from '../utility/functions';
 
 export default class Application extends Component {
 
@@ -63,7 +63,7 @@ export default class Application extends Component {
    */
   setUser(user) {
     const computer = user === 'X' ? 'O' : 'X';
-    const game =  [
+    const game = [
         ['', '', ''],
         ['', '', ''],
         ['', '', ''],
@@ -88,18 +88,12 @@ export default class Application extends Component {
       const miniMaxVals = moves.map(move => {
         const possibleGame = JSON.parse(JSON.stringify(game));
         possibleGame[move[0]][move[1]] = computer;
-        const val = minimax(possibleGame, user, computer, 0);
-        return val;
+        return minimax(possibleGame, user, computer, 0);
       });
 
-      let max = -1000;
-      let move;
-      for (let i = 0; i < miniMaxVals.length; i++) {
-        if (miniMaxVals[i] > max) {
-          move = moves[i];
-          max = miniMaxVals[i];
-        }
-      }
+      const max = Math.max.apply(Math, miniMaxVals);
+      const index = miniMaxVals.findIndex(val => val === max);
+      const move = moves[index];
       game[move[0]][move[1]] = computer;
 
       // result

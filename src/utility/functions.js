@@ -18,7 +18,6 @@ export function isWinner(game) {
 
   // input validation
   const n = game.length;
-  const test = 1;
   if (!Array.isArray(game)) {
     throw new Exception('The input game must be a square array of arrays');
   } else {
