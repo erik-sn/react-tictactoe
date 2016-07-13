@@ -14,6 +14,7 @@ export default class Application extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showModal: true,
       size: window.innerHeight,
       user: undefined,
       computer: undefined,
@@ -62,11 +63,15 @@ export default class Application extends Component {
    */
   setUser(user) {
     const computer = user === 'X' ? 'O' : 'X';
-    const game = this.state.game;
+    const game =  [
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', ''],
+    ];
     const x = Math.floor(Math.random() * 2);
     const y = Math.floor(Math.random() * 2);
     game[x][y] = computer;
-    this.setState({ user, computer, game });
+    this.setState({ showModal: false, user, computer, game });
   }
 
   adjustSize() {
@@ -86,7 +91,7 @@ export default class Application extends Component {
         const val = minimax(possibleGame, user, computer, 0);
         return val;
       });
-      
+
       let max = -1000;
       let move;
       for (let i = 0; i < miniMaxVals.length; i++) {
@@ -96,28 +101,27 @@ export default class Application extends Component {
         }
       }
       game[move[0]][move[1]] = computer;
-      
+
       // result
-      if (max === 10) {      
-        this.setState({ game, result: 'YOU LOSE' });
+      if (max === 10) {
+        this.setState({ game, showModal: true, result: 'YOU LOSE' });
       } else if (moves.length === 1) {
-        this.setState({ game, result: 'DRAW'});
-      }      
+        this.setState({ game, showModal: true, result: 'DRAW' });
+      }
     }
   }
 
   render() {
-    const { game, size, user, labels, result } = this.state;
+    const { showModal, game, size, user, labels, result } = this.state;
     const modal = (
-      <Modal choice={(input) => this.setUser(input)} text={'Choose which player you want to be:'} />
+      <Modal result={result} choice={(input) => this.setUser(input)} text={'Choose which player you want to be:'} />
     );
     const props = { size, labels, select: this.onSelect };
 
     return (
       <div>
-        {!user ? modal : ''}
-        <div id="app-container" style={!user ? { opacity: '0.3', width: size * 3 } : { width: size * 3 }} >
-          <h1>{result}</h1>
+        {showModal ? modal : ''}
+        <div id="app-container" style={showModal ? { opacity: '0.3', width: size * 3 } : { width: size * 3 }} >
           <div className="box-row">
             <Box id="box00" val={game[0][0]} {...props} />
             <Box id="box01" val={game[0][1]} {...props} />
