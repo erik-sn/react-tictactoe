@@ -127,11 +127,11 @@ describe('functions', () => {
       expect(minimax(game2, 'X', 'X', 0)).to.equal(5);
 
       const game3 = [
+        ['X', 'X', 'O'],
         ['', 'O', ''],
-        ['', 'X', 'O'],
-        ['X', '', ''],
+        ['', '', ''],
       ];
-      expect(minimax(game3, 'X', 'X', 0)).to.equal(9);
+      expect(minimax(game3, 'X', 'X', 0)).to.equal(0);
     });
   });
 

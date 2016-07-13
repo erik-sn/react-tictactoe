@@ -22,7 +22,7 @@ export default class Application extends Component {
         ['', '', ''],
         ['', '', ''],
       ],
-      result: 'None',
+      result: '',
     };
     this.onSelect = this.onSelect.bind(this);
   }
@@ -77,30 +77,33 @@ export default class Application extends Component {
   }
 
   makeMove() {
-    const { game, computer } = this.state;
+    const { game, user, computer } = this.state;
     const moves = findMoves(game);
-    console.log(moves);
-    const miniMaxVals = moves.map(move => {
-      const possibleGame = JSON.parse(JSON.stringify(game));
-      possibleGame[move[0]][move[1]] = computer;
-      return minimax(possibleGame, computer, computer, 0);
-    });
-    console.log(miniMaxVals);
-    let max = -1000;
-    let move;
-    for (let i = 0; i < miniMaxVals.length; i++) {
-      if (miniMaxVals[i] > max) {
-        move = moves[i];
-        max = miniMaxVals[i];
+    if (moves.length > 0) {
+      const miniMaxVals = moves.map(move => {
+        const possibleGame = JSON.parse(JSON.stringify(game));
+        possibleGame[move[0]][move[1]] = computer;
+        const val = minimax(possibleGame, user, computer, 0);
+        return val;
+      });
+      
+      let max = -1000;
+      let move;
+      for (let i = 0; i < miniMaxVals.length; i++) {
+        if (miniMaxVals[i] > max) {
+          move = moves[i];
+          max = miniMaxVals[i];
+        }
       }
+      game[move[0]][move[1]] = computer;
+      
+      // result
+      if (max === 10) {      
+        this.setState({ game, result: 'YOU LOSE' });
+      } else if (moves.length === 1) {
+        this.setState({ game, result: 'DRAW'});
+      }      
     }
-    game[move[0]][move[1]] = computer;
-    if (max === 10) {      
-      this.setState({ game, result: 'YOU LOSE' });
-    } else {      
-      this.setState({ game });
-    }
-    
   }
 
   render() {
@@ -114,7 +117,7 @@ export default class Application extends Component {
       <div>
         {!user ? modal : ''}
         <div id="app-container" style={!user ? { opacity: '0.3', width: size * 3 } : { width: size * 3 }} >
-          {result}
+          <h1>{result}</h1>
           <div className="box-row">
             <Box id="box00" val={game[0][0]} {...props} />
             <Box id="box01" val={game[0][1]} {...props} />

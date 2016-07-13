@@ -86,7 +86,7 @@ export function minimax(game, turn, computer, depth) {
     possibleGame[move[0]][move[1]] = turn;
     scores.push(minimax(possibleGame, turn === 'X' ? 'O' : 'X', computer, depth + 1));
   });
-  
+
   if (turn === computer) {
     let max = -1000;
     for (let i = 0; i < scores.length; i++) {
