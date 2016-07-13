@@ -7,7 +7,7 @@ import Modal from './modal';
 import Footer from './footer';
 import Box from './box';
 
-import { findMoves, minimax } from '../utility/functions';
+import { findMoves, minimax, isWinner } from '../utility/functions';
 
 export default class Application extends Component {
 
@@ -74,6 +74,10 @@ export default class Application extends Component {
     this.setState({ showModal: false, user, computer, game });
   }
 
+  /**
+   * Called on app start up and whenever the window is resized to
+   * keep the game on screen
+   */
   adjustSize() {
     const height = window.innerHeight;
     const width = window.innerWidth;
@@ -81,32 +85,41 @@ export default class Application extends Component {
     this.setState({ size: (smallest * 0.6) / 3 });
   }
 
+  /**
+   * Computers move - if there
+   */
   makeMove() {
-    const { game, user, computer } = this.state;
+    const { game, computer } = this.state;
     const moves = findMoves(game);
-    if (moves.length > 0) {
-      const miniMaxVals = moves.map(move => {
-        const possibleGame = JSON.parse(JSON.stringify(game));
-        possibleGame[move[0]][move[1]] = computer;
-        return minimax(possibleGame, user, computer, 0);
-      });
 
-      const max = Math.max.apply(Math, miniMaxVals);
-      const index = miniMaxVals.findIndex(val => val === max);
-      const move = moves[index];
-      game[move[0]][move[1]] = computer;
+    const miniMaxVals = this.getMiniMaxValues(game, computer);
+    const max = Math.max.apply(Math, miniMaxVals);
+    const index = miniMaxVals.findIndex(val => val === max);
+    const move = moves[index];
+    game[move[0]][move[1]] = computer;
 
-      // result
-      if (max === 10) {
-        this.setState({ game, showModal: true, result: 'YOU LOSE' });
-      } else if (moves.length === 1) {
-        this.setState({ game, showModal: true, result: 'DRAW' });
-      }
+    this.checkResult(game, moves.length - 1, computer);
+  }
+
+  checkResult(game, movesRemaining) {
+    const result = isWinner(game);
+    if (!result && movesRemaining === 0) {
+      this.setState({ game, showModal: true, result: 'DRAW' });
+    } else if (result) {
+      this.setState({ game, showModal: true, result: 'YOU LOSE' });
     }
   }
 
+  getMiniMaxValues(game, computer) {
+    return findMoves(game).map(move => {
+      const possibleGame = JSON.parse(JSON.stringify(game));
+      possibleGame[move[0]][move[1]] = computer;
+      return minimax(possibleGame, computer === 'X' ? 'O' : 'X', computer, 0);
+    });
+  }
+
   render() {
-    const { showModal, game, size, user, labels, result } = this.state;
+    const { showModal, game, size, labels, result } = this.state;
     const modal = (
       <Modal result={result} choice={(input) => this.setUser(input)} text={'Choose which player you want to be:'} />
     );
