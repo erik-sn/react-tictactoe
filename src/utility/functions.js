@@ -46,27 +46,8 @@ export function isWinner(game) {
 }
 
 
-/**
-    If the game is over, return the score from X's perspective.
-    Otherwise get a list of new game states for every possible move
-    Create a scores list
-    For each of these states add the minimax result of that state to the scores list
-    If it's X's turn, return the maximum score from the scores list
-    If it's O's turn, return the minimum score from the scores list
- */
-export function minimax(game, player) {
-  // check to see if there is a winner, return from player's perspective
-  const result = isWinner(game);
-  if (result === player) {
-    return 10;
-  } else if (result) {
-    return -10;
-  }
-
-  const scores = [];
+export function findMoves(game) {
   const moves = [];
-
-  // find open spaces
   for (let x = 0; x < game.length; x++) {
     for (let y = 0; y < game.length; y++) {
       if (game[x][y] === '') {
@@ -74,11 +55,50 @@ export function minimax(game, player) {
       }
     }
   }
+  return moves;
+}
+
+export function score(game, depth, computer) {
+  const result = isWinner(game);
+  if (result === computer) {
+    return 10 - depth;
+  } else if (result) {
+    return depth - 10;
+  }
+  return 0;
+}
+
+export function minimax(game, turn, computer, depth) {
+  // check to see if there is a winner, return from player's perspective
+  if (isWinner(game)) {
+    return score(game, depth, computer);
+  }
+  
+  const scores = [];
+  const moves = findMoves(game);
+  if (moves.length === 0) {
+    return 0;
+  }
+  // find open spaces
 
   moves.forEach(move => {
-    const possibleGame = game[move[0]][move[1]];
-    scores.push(minimax(possibleGame));
+    const possibleGame = JSON.parse(JSON.stringify(game));
+    possibleGame[move[0]][move[1]] = turn;
+    scores.push(minimax(possibleGame, turn === 'X' ? 'O' : 'X', computer, depth + 1));
   });
-  console.log(scores);
+  
+  if (turn === computer) {
+    let max = -1000;
+    for (let i = 0; i < scores.length; i++) {
+      max = scores[i] > max ? scores[i] : max;
+    }
+    return max;
+  } else {
+    let min = 1000;
+    for (let i = 0; i < scores.length; i++) {
+      min = scores[i] < min ? scores[i] : min;
+    }
+    return min;
+  }
 }
 

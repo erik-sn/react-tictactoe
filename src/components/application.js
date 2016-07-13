@@ -7,7 +7,7 @@ import Modal from './modal';
 import Footer from './footer';
 import Box from './box';
 
-import { isWinner } from '../utility/functions';
+import { findMoves, minimax, isWinner } from '../utility/functions';
 
 export default class Application extends Component {
 
@@ -22,7 +22,7 @@ export default class Application extends Component {
         ['', '', ''],
         ['', '', ''],
       ],
-      winner: false,
+      result: 'None',
     };
     this.onSelect = this.onSelect.bind(this);
   }
@@ -42,7 +42,7 @@ export default class Application extends Component {
    * @param  {any} id
    */
   onSelect(id) {
-    const { game, computer } = this.state;
+    const { game } = this.state;
     const xy = id.replace('box', '');
     const x = parseInt(xy[0], 10);
     const y = parseInt(xy[1], 10);
@@ -51,7 +51,7 @@ export default class Application extends Component {
     if (game[x][y] === '') {
       game[x][y] = this.state.user;
       this.setState({ game });
-      this.makeMove(x, y);
+      this.makeMove();
     }
   }
 
@@ -62,8 +62,11 @@ export default class Application extends Component {
    */
   setUser(user) {
     const computer = user === 'X' ? 'O' : 'X';
-    this.setState({ user, computer });
-    this.makeMove();
+    const game = this.state.game;
+    const x = Math.floor(Math.random() * 2);
+    const y = Math.floor(Math.random() * 2);
+    game[x][y] = computer;
+    this.setState({ user, computer, game });
   }
 
   adjustSize() {
@@ -73,14 +76,35 @@ export default class Application extends Component {
     this.setState({ size: (smallest * 0.6) / 3 });
   }
 
-  makeMove(userX, userY) {   
-    console.log(isWinner)
-    const { game, user, computer } = this.state;
-    console.log(isWinner(game));
+  makeMove() {
+    const { game, computer } = this.state;
+    const moves = findMoves(game);
+    console.log(moves);
+    const miniMaxVals = moves.map(move => {
+      const possibleGame = JSON.parse(JSON.stringify(game));
+      possibleGame[move[0]][move[1]] = computer;
+      return minimax(possibleGame, computer, computer, 0);
+    });
+    console.log(miniMaxVals);
+    let max = -1000;
+    let move;
+    for (let i = 0; i < miniMaxVals.length; i++) {
+      if (miniMaxVals[i] > max) {
+        move = moves[i];
+        max = miniMaxVals[i];
+      }
+    }
+    game[move[0]][move[1]] = computer;
+    if (max === 10) {      
+      this.setState({ game, result: 'YOU LOSE' });
+    } else {      
+      this.setState({ game });
+    }
+    
   }
 
   render() {
-    const { game, size, user, labels } = this.state;
+    const { game, size, user, labels, result } = this.state;
     const modal = (
       <Modal choice={(input) => this.setUser(input)} text={'Choose which player you want to be:'} />
     );
@@ -90,6 +114,7 @@ export default class Application extends Component {
       <div>
         {!user ? modal : ''}
         <div id="app-container" style={!user ? { opacity: '0.3', width: size * 3 } : { width: size * 3 }} >
+          {result}
           <div className="box-row">
             <Box id="box00" val={game[0][0]} {...props} />
             <Box id="box01" val={game[0][1]} {...props} />
