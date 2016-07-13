@@ -59,6 +59,7 @@ body {
 
 .footer {
   @include blur(5px);
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;

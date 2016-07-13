@@ -37,14 +37,16 @@ export default class Application extends Component {
       this.adjustSize();
     });
   }
+
   /**
    * Called when the user clicks on an empty box, set this box as
    * the user's label and then let the computer take a turn
-   * @param  {any} id
+   * @param  {string} id
    */
   onSelect(id) {
     const { game } = this.state;
     const xy = id.replace('box', '');
+    // generate random response for first move of the game
     const x = parseInt(xy[0], 10);
     const y = parseInt(xy[1], 10);
 
@@ -75,18 +77,40 @@ export default class Application extends Component {
   }
 
   /**
-   * Called on app start up and whenever the window is resized to
-   * keep the game on screen
+   * Check the result of the game - if the computer wins or there is a
+   * draw then display the result to the user through the modal
+   * @param  {array} game - 2D array representing game
+   * @param  {number} movesRemaining - the amount of open spaces in the game
    */
-  adjustSize() {
-    const height = window.innerHeight;
-    const width = window.innerWidth;
-    const smallest = height < width ? height : width;
-    this.setState({ size: (smallest * 0.6) / 3 });
+  checkResult(game, movesRemaining) {
+    const result = isWinner(game);
+    if (!result && movesRemaining === 0) {
+      this.setState({ game, showModal: true, result: 'DRAW' });
+    } else if (result) {
+      this.setState({ game, showModal: true, result: 'YOU LOSE' });
+    }
   }
 
   /**
-   * Computers move - if there
+   * Check all possible moves from the computer's perspective, and find
+   * the corresponding minimax value for all of them.
+   * @param  {array} game - 2D array representing tic tac toe game
+   * @param  {string} computer - which icon represents the computer
+   */
+  getMiniMaxValues(game, computer) {
+    return findMoves(game).map(move => {
+      const possibleGame = JSON.parse(JSON.stringify(game));
+      possibleGame[move[0]][move[1]] = computer;
+      // note that the perspective taken is from the computer, so the minimax
+      // values must be generated assuming the player has the next move.
+      return minimax(possibleGame, computer === 'X' ? 'O' : 'X', computer, 0);
+    });
+  }
+
+  /**
+   * Computers move - if implements the minimax algorithm to find the 
+   * most optimal move. Applies the move and then checks to see if the
+   * game is complete.
    */
   makeMove() {
     const { game, computer } = this.state;
@@ -101,21 +125,15 @@ export default class Application extends Component {
     this.checkResult(game, moves.length - 1, computer);
   }
 
-  checkResult(game, movesRemaining) {
-    const result = isWinner(game);
-    if (!result && movesRemaining === 0) {
-      this.setState({ game, showModal: true, result: 'DRAW' });
-    } else if (result) {
-      this.setState({ game, showModal: true, result: 'YOU LOSE' });
-    }
-  }
-
-  getMiniMaxValues(game, computer) {
-    return findMoves(game).map(move => {
-      const possibleGame = JSON.parse(JSON.stringify(game));
-      possibleGame[move[0]][move[1]] = computer;
-      return minimax(possibleGame, computer === 'X' ? 'O' : 'X', computer, 0);
-    });
+  /**
+   * Called on app start up and whenever the window is resized to
+   * keep the game on screen
+   */
+  adjustSize() {
+    const height = window.innerHeight;
+    const width = window.innerWidth;
+    const smallest = height < width ? height : width;
+    this.setState({ size: (smallest * 0.6) / 3 });
   }
 
   render() {
