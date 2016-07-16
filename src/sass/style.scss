@@ -38,7 +38,7 @@ $tertiary: #E7DFDD;
 
 body {
   font-family: $font;
-  background-color: $primary;
+  background-color: $primary !important;
   line-height: 2 !important;
 }
 

@@ -20,14 +20,14 @@ import compression from 'compression';
 import http from 'http';
 
 const app = express(); // delcare application
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 
 app.use(compression()); // compress compatible files for quicker client load time
 app.use(logger('dev')); // log content
 
 // Set path to public assets
-app.use('/static', express.static('static'));
-app.use('/static', express.static('dist'));
+app.use('/tictactoe/resources', express.static('resources'));
+app.use('/tictactoe/static', express.static('dist'));
 
 app.use('*', (req, res) => {
   res.status(200).send(renderFullPage());
@@ -55,13 +55,13 @@ function renderFullPage() {
     <!doctype html>
     <html>
       <head>
-        <link rel="stylesheet" href="/static/bundle.min.css">
+        <link rel="stylesheet" href="/tictactoe/static/bundle.min.css">
         <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
       </head>
       <body id="app-body">
         <div class="react-container"></div>
       </body>
-      <script src="/static/bundle.min.js"></script>
+      <script src="/tictactoe/static/bundle.min.js"></script>
     </html>
   `;
 }
