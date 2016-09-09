@@ -1,7 +1,6 @@
 import React from 'react';
 
-const Modal = (props) => {
-  const { result, text, choice } = props;
+const Modal = ({ result, text, choice }) => {
   return (
     <div className="modal" style={{height: result !== '' ? '225px' : '150px' }}>
       {result !== '' ? <h1>{result}</h1> : ''}

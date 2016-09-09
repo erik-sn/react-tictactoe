@@ -15,7 +15,6 @@ export default class Application extends Component {
     super(props);
     this.state = {
       showModal: true,
-      showFooter: true,
       size: window.innerHeight,
       user: undefined,
       computer: undefined,
@@ -134,11 +133,7 @@ export default class Application extends Component {
     const height = window.innerHeight;
     const width = window.innerWidth;
     const smallest = height < width ? height : width;
-    console.log(smallest);
-    this.setState({
-      size: (smallest * 0.6) / 3,
-      showFooter: smallest > 400,
-    });
+    this.setState({ size: (smallest * 0.6) / 3 });
   }
 
   displayModal() {
@@ -152,7 +147,7 @@ export default class Application extends Component {
   }
 
   render() {
-    const { showModal, showFooter, game, size, labels } = this.state;
+    const { showModal, game, size, labels } = this.state;
     const boxProps = { size, labels, select: this.onSelect };
     return (
       <div>
@@ -174,7 +169,6 @@ export default class Application extends Component {
             <Box id="box22" val={game[2][2]} {...boxProps} />
           </div>
         </div>
-        {showFooter ? <Footer /> : ''}
       </div>
     );
   }
