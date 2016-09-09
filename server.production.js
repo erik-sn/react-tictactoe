@@ -1,17 +1,3 @@
-/**
- *  This line is necessary because we are using a SASS compiler through
- *  webpack on the client side. Because our JS/ES6 code is also loaded through
- *  node in this server file, we will get syntax errors if the node server
- *  attemps to parse the css/scss files.
- *
- *  To bypass this, we set this process.env variable as true when using webpack
- *  and delete it here. Then we only import/require the css/scss files in React
- *  components if this variable exists (and is true).
- *
- *  This is unique to Isomorphic applications, see here:
- *      http://stackoverflow.com/a/30355080/4396787
- *
- */
 delete process.env.BROWSER;
 
 import express from 'express';

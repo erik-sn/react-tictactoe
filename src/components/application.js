@@ -15,6 +15,7 @@ export default class Application extends Component {
     super(props);
     this.state = {
       showModal: true,
+      showFooter: true,
       size: window.innerHeight,
       user: undefined,
       computer: undefined,
@@ -77,21 +78,6 @@ export default class Application extends Component {
   }
 
   /**
-   * Check the result of the game - if the computer wins or there is a
-   * draw then display the result to the user through the modal
-   * @param  {array} game - 2D array representing game
-   * @param  {number} movesRemaining - the amount of open spaces in the game
-   */
-  checkResult(game, movesRemaining) {
-    const result = isWinner(game);
-    if (!result && movesRemaining === 0) {
-      this.setState({ game, showModal: true, result: 'DRAW' });
-    } else if (result) {
-      this.setState({ game, showModal: true, result: 'YOU LOSE' });
-    }
-  }
-
-  /**
    * Check all possible moves from the computer's perspective, and find
    * the corresponding minimax value for all of them.
    * @param  {array} game - 2D array representing tic tac toe game
@@ -105,6 +91,21 @@ export default class Application extends Component {
       // values must be generated assuming the player has the next move.
       return minimax(possibleGame, computer === 'X' ? 'O' : 'X', computer, 0);
     });
+  }
+
+  /**
+   * Check the result of the game - if the computer wins or there is a
+   * draw then display the result to the user through the modal
+   * @param  {array} game - 2D array representing game
+   * @param  {number} movesRemaining - the amount of open spaces in the game
+   */
+  checkResult(game, movesRemaining) {
+    const result = isWinner(game);
+    if (!result && movesRemaining === 0) {
+      this.setState({ game, showModal: true, result: 'DRAW' });
+    } else if (result) {
+      this.setState({ game, showModal: true, result: 'YOU LOSE' });
+    }
   }
 
   /**
@@ -133,19 +134,30 @@ export default class Application extends Component {
     const height = window.innerHeight;
     const width = window.innerWidth;
     const smallest = height < width ? height : width;
-    this.setState({ size: (smallest * 0.6) / 3 });
+    console.log(smallest);
+    this.setState({
+      size: (smallest * 0.6) / 3,
+      showFooter: smallest > 400,
+    });
+  }
+
+  displayModal() {
+    return (
+      <Modal
+        result={this.state.result}
+        choice={(input) => this.setUser(input)}
+        text={'Choose which player you want to be:'}
+      />
+    );
   }
 
   render() {
-    const { showModal, game, size, labels, result } = this.state;
-    const modal = (
-      <Modal result={result} choice={(input) => this.setUser(input)} text={'Choose which player you want to be:'} />
-    );
+    const { showModal, showFooter, game, size, labels } = this.state;    
     const props = { size, labels, select: this.onSelect };
-
+    console.log(showFooter);
     return (
       <div>
-        {showModal ? modal : ''}
+        {showModal ? this.displayModal() : ''}
         <div id="app-container" style={showModal ? { opacity: '0.3', width: size * 3 } : { width: size * 3 }} >
           <div className="box-row">
             <Box id="box00" val={game[0][0]} {...props} />
@@ -163,7 +175,7 @@ export default class Application extends Component {
             <Box id="box22" val={game[2][2]} {...props} />
           </div>
         </div>
-        <Footer />
+        {showFooter ? <Footer /> : ''}
       </div>
     );
   }

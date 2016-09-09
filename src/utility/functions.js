@@ -2,6 +2,7 @@ export function Exception(message) {
   this.message = message;
   this.name = 'Exception';
 }
+
 /**
  * Check a game of tic-tac-toe to see if there is a winner. If there is, return
  * the winner's label. If not, return undefined. Supports tic-tac-toe grids of any
