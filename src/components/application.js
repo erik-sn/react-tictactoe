@@ -153,25 +153,25 @@ export default class Application extends Component {
 
   render() {
     const { showModal, showFooter, game, size, labels } = this.state;
-    const props = { size, labels, select: this.onSelect };
+    const boxProps = { size, labels, select: this.onSelect };
     return (
       <div>
         {showModal ? this.displayModal() : ''}
-        <div id="app-container" style={showModal ? { opacity: '0.3', width: size * 3 } : { width: size * 3 }} >
+        <div id="app-container" style={showModal ? { opacity: '0.3', width: size * 3.15 } : { width: size * 3.15 }} >
           <div className="box-row">
-            <Box id="box00" val={game[0][0]} {...props} />
-            <Box id="box01" val={game[0][1]} {...props} />
-            <Box id="box02" val={game[0][2]} {...props} />
+            <Box id="box00" val={game[0][0]} {...boxProps} />
+            <Box id="box01" val={game[0][1]} {...boxProps} />
+            <Box id="box02" val={game[0][2]} {...boxProps} />
           </div>
           <div className="box-row">
-            <Box id="box10" val={game[1][0]} {...props} />
-            <Box id="box11" val={game[1][1]} {...props} />
-            <Box id="box12" val={game[1][2]} {...props} />
+            <Box id="box10" val={game[1][0]} {...boxProps} />
+            <Box id="box11" val={game[1][1]} {...boxProps} />
+            <Box id="box12" val={game[1][2]} {...boxProps} />
           </div>
           <div className="box-row">
-            <Box id="box20" val={game[2][0]} {...props} />
-            <Box id="box21" val={game[2][1]} {...props} />
-            <Box id="box22" val={game[2][2]} {...props} />
+            <Box id="box20" val={game[2][0]} {...boxProps} />
+            <Box id="box21" val={game[2][1]} {...boxProps} />
+            <Box id="box22" val={game[2][2]} {...boxProps} />
           </div>
         </div>
         {showFooter ? <Footer /> : ''}

@@ -45,6 +45,7 @@ body {
 
 
 .box {
+  @include noSelect();
   border: 5px solid $tertiary;
   color: $tertiary;
   display: inline-block;
@@ -105,6 +106,7 @@ body {
 }
 
 .user-choice {
+  @include noSelect();
   display: inline-block;
   height: 60px;
   width: 60px;
@@ -130,4 +132,6 @@ body {
   transition: color 0.5s ease-in-out;
   -webkit-transition: background-color 0.5s ease-in-out;
   transition: background-color 0.5s ease-in-out;
+  box-shadow: 0px 0px 20px 0px rgba(#000000, 0.25);
+
 }
