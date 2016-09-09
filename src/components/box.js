@@ -9,8 +9,8 @@ const Box = (props) => {
   return (
     <div
       id={id}
-      style={{ height: size, width: size, fontSize: size * 0.5 }}
-      className="box"
+      style={{ height: size, width: size, fontSize: size * 0.5, cursor: val ? 'auto' : 'pointer' }}
+      className={`box ${val ? '' : 'open-box'}`}
       onClick={() => select(id)}
     >
     {val}

@@ -152,9 +152,8 @@ export default class Application extends Component {
   }
 
   render() {
-    const { showModal, showFooter, game, size, labels } = this.state;    
+    const { showModal, showFooter, game, size, labels } = this.state;
     const props = { size, labels, select: this.onSelect };
-    console.log(showFooter);
     return (
       <div>
         {showModal ? this.displayModal() : ''}
