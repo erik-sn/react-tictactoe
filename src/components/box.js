@@ -1,5 +1,5 @@
 if (process.env.BROWSER) {
-  require('../sass/box.scss');
+  require('../styles/box.scss');
 }
 
 import React from 'react';

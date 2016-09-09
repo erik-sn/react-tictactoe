@@ -4,6 +4,49 @@ export function Exception(message) {
 }
 
 /**
+ * Check to see if the input game has a winner
+ * @param  {array} game 2D array representing game board
+ * @param  {int} x x-coordinate of game board
+ * @param  {int} y y-coordinate of game board
+ * @param  {int} n size of game board
+ * @return {boolean} whether or not game is valid
+ */
+function check(game, x, y, n) {
+  const player = game[x][y];
+  // cols, rows, left-diagonal, right-diagonal respectively
+  const counts = [0, 0, 0, 0];
+  for (let i = 0; i < n; i++) {
+    counts[0] = game[x][i] === player ? counts[0] + 1 : counts[0];
+    counts[1] = game[i][y] === player ? counts[1] + 1 : counts[1];
+    counts[2] = game[i][i] === player ? counts[2] + 1 : counts[2];
+    counts[3] = game[i][n - i - 1] === player ? counts[3] + 1 : counts[3];
+  }
+  return counts.some(count => count === n);
+}
+
+/**
+ * Check to see if a game is a valid - 2D array
+ * @param  {array} game 2D array representing game board
+ * @return {boolean} whether or not game is valid
+ */
+export function isValidGame(game) {
+  const n = game.length;
+  if (!Array.isArray(game)) {
+    throw new Exception('The input game must be a square array of arrays');
+  }
+
+  game.forEach(row => {
+    if (!Array.isArray(row)) {
+      throw new Exception('The input game must be a square array of arrays');
+    }
+  });
+  if (game.some(row => row.length !== n)) {
+    throw new Exception('The input game was not a square board');
+  }
+  return true;
+}
+
+/**
  * Check a game of tic-tac-toe to see if there is a winner. If there is, return
  * the winner's label. If not, return undefined. Supports tic-tac-toe grids of any
  * size
@@ -11,44 +54,23 @@ export function Exception(message) {
  * @return {string} winner of the game - undefined if no winner
  */
 export function isWinner(game) {
-  function check(game, player, x, y, n) {
-    // cols, rows, left-diagonal, right-diagonal respectively
-    const counts = [0, 0, 0, 0];
-    for (let i = 0; i < n; i++) {
-      counts[0] = game[x][i] === player ? counts[0] + 1 : counts[0];
-      counts[1] = game[i][y] === player ? counts[1] + 1 : counts[1];
-      counts[2] = game[i][i] === player ? counts[2] + 1 : counts[2];
-      counts[3] = game[i][n - i - 1] === player ? counts[3] + 1 : counts[3];
-    }
-    return counts.some(count => count === n);
-  }
 
-  // input validation
-  const n = game.length;
-  if (!Array.isArray(game)) {
-    throw new Exception('The input game must be a square array of arrays');
-  } else {
-    game.forEach(row => {
-      if (!Array.isArray(row)) {
-        throw new Exception('The input game must be a square array of arrays');
-      }
-    });
-  }
-  if (game.some(row => row.length !== n)) {
-    throw new Exception('The input game was not a square board');
-  }
-
-  // iterate over all boxes - if the space contains a mark, search
-  // all related columns, rows, and both diagonals to see if the
-  // game is won
-  for (let x = 0; x < game.length; x++) {
-    for (let y = 0; y < game.length; y++) {
-      if (game[x][y] !== '' && check(game, game[x][y], x, y, n)) {
-        return game[x][y];
+  /**
+   * iterate over all boxes - if the space contains a mark, search
+   * all related columns, rows, and both diagonals to see if the
+   * game is won
+   */
+  if (isValidGame(game)) {
+    const n = game.length;
+    for (let x = 0; x < game.length; x++) {
+      for (let y = 0; y < game.length; y++) {
+        if (game[x][y] !== '' && check(game, x, y, n)) {
+          return game[x][y];
+        }
       }
     }
   }
-  return undefined;
+  return false;
 }
 
 /**
