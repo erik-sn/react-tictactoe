@@ -9,9 +9,9 @@ export function Exception(message) {
  * @param  {int} x x-coordinate of game board
  * @param  {int} y y-coordinate of game board
  * @param  {int} n size of game board
- * @return {boolean} whether or not game is valid
+ * @return {boolean} whether or not the game has a winner
  */
-function check(game, x, y, n) {
+function checkGame(game, x, y, n) {
   const player = game[x][y];
   // cols, rows, left-diagonal, right-diagonal respectively
   const counts = [0, 0, 0, 0];
@@ -64,7 +64,7 @@ export function isWinner(game) {
     const n = game.length;
     for (let x = 0; x < game.length; x++) {
       for (let y = 0; y < game.length; y++) {
-        if (game[x][y] !== '' && check(game, x, y, n)) {
+        if (game[x][y] !== '' && checkGame(game, x, y, n)) {
           return game[x][y];
         }
       }
