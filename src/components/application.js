@@ -4,7 +4,6 @@ if (process.env.BROWSER) {
 
 import React, { Component } from 'react';
 import Modal from './modal';
-import Footer from './footer';
 import Box from './box';
 
 import { findMoves, minimax, isWinner } from '../utility/functions';

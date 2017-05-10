@@ -6,7 +6,7 @@ import compression from 'compression';
 import http from 'http';
 
 const app = express(); // delcare application
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3004;
 
 app.use(compression()); // compress compatible files for quicker client load time
 app.use(logger('dev')); // log content
@@ -40,7 +40,15 @@ function renderFullPage() {
   return `
     <!doctype html>
     <html>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link
+        href="https://upload.wikimedia.org/wikipedia/commons/3/32/Tic_tac_toe.svg"
+        rel="icon"
+        type="image/png"
+      >
       <head>
+        <title>Tic Tac Toe</title>
         <link rel="stylesheet" href="/tictactoe/static/bundle.min.css">
         <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
       </head>
